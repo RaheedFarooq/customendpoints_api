@@ -63,7 +63,6 @@ app.get("/data/:id", async (req, res) => {
 
     return res.status(200).send(responseBody);
   } catch (e) {
-    console.log(e)
     return res.status(422).send(failedResponse);
   }
 });

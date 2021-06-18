@@ -10,6 +10,7 @@ let self = (module.exports = {
     OBJECT: "Object",
     ARRAY: "Array",
     CUSTOM: "Custom",
+    RANDOM: "Random",
   },
 
   createDataFromObject: (obj) => {
@@ -50,17 +51,21 @@ let self = (module.exports = {
               break;
             case self.DATATYPES.ARRAY:
               let dataForArray = obj[key].length
-                ? new Array(obj[key].length)
-                : new Array(1);
-              data[key] = dataForArray.fill(
-                self.wordToSentenceCase(obj[key].of || "") ===
-                  self.DATATYPES.INTEGER
-                  ? +(Math.random() * 50).toFixed(0)
-                  : randomWords()
-              );
+                ? new Array(obj[key].length).fill(null)
+                : new Array(1).fill(null);
+                
+                for (let i = 0; i < dataForArray.length; i++) {
+                  dataForArray[i] = self.wordToSentenceCase(obj[key].of || "") === self.DATATYPES.INTEGER
+                                  ? +(Math.random() * 50).toFixed(0)
+                                  : randomWords()
+                }
+                data[key] = dataForArray;
               break;
             case self.DATATYPES.CUSTOM:
-              if(obj[key].value) data[key] = obj[key].value;
+              if (obj[key].value) data[key] = obj[key].value;
+            case self.DATATYPES.RANDOM:
+              let value = obj[key].value
+              if (value?.length){ data[key] = value[+(Math.random() * (value.length - 1)).toFixed(0)];}
               break;
             default:
               break;
